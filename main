@@ -1,0 +1,43 @@
+import requests
+import json
+from win32com.client import Dispatch
+import urllib.request
+
+def connect(host = 'http://newsapi.org/v2/top-headlines?country=in&apiKey=79880a04902a4d9187b205545085b609'):
+    try:
+        urllib.request.urlopen(host)
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+def speak(str):
+
+    speak = Dispatch("SAPI.SpVoice")
+    speak.Speak(str)
+
+if __name__ == '__main__':
+
+   a = connect()
+
+   if a==True:
+        print("Ka haal ba , sir jee??")
+        speak("Ka haal baw , sir ji??")
+
+        url = "http://newsapi.org/v2/top-headlines?country=in&apiKey=79880a04902a4d9187b205545085b609"
+
+        response = requests.get(url).text #it is string , needs to be parsed of or converted into dictionary
+        news = json.loads(response) #now its parsed and we can use it as python dictionary object
+        arts = news['articles'] #it will give the value of key - articles , which is a list and the elements of list are dictionaries
+        #now we will traverse to each element(dictionary) of the list arts
+
+        for article in arts:
+            print(article['title'])
+            speak(article['title'])
+            speak("Aglaw news baw")
+        speak("That's it for today sir , hope you got some vital news . Have a good day")
+        print("That's it for today sir , hope you got some vital news . Have a good day")
+   else:
+       speak("Abbay Pahaley Net check kar")
+
+
